@@ -8,6 +8,7 @@ use App\Models\Intake;
 use App\Models\Semester;
 use App\Models\Module;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class TimetableController extends Controller
 {
@@ -100,6 +101,48 @@ class TimetableController extends Controller
         }
     }
 
+    // New method to generate weeks from start date to end date
+    public function getWeeks(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        if (!$startDate || !$endDate) {
+            return response()->json(['weeks' => []]);
+        }
+
+        try {
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            $weeks = [];
+
+            // Generate weeks from start date to end date
+            $currentWeekStart = $start->copy()->startOfWeek();
+            $weekNumber = 1;
+
+            while ($currentWeekStart <= $end) {
+                $currentWeekEnd = $currentWeekStart->copy()->endOfWeek();
+                
+                // Only include weeks that overlap with the semester period
+                if ($currentWeekEnd >= $start && $currentWeekStart <= $end) {
+                    $weeks[] = [
+                        'week_number' => $weekNumber,
+                        'start_date' => $currentWeekStart->format('Y-m-d'),
+                        'end_date' => $currentWeekEnd->format('Y-m-d'),
+                        'display_text' => "Week {$weekNumber} (" . $currentWeekStart->format('M d') . " - " . $currentWeekEnd->format('M d, Y') . ")"
+                    ];
+                    $weekNumber++;
+                }
+                
+                $currentWeekStart->addWeek();
+            }
+
+            return response()->json(['weeks' => $weeks]);
+        } catch (\Exception $e) {
+            return response()->json(['weeks' => []]);
+        }
+    }
+
     // Method to get modules for a specific semester
     public function getModulesBySemester(Request $request)
     {
@@ -150,10 +193,23 @@ class TimetableController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $semester = $request->input('semester');
+        $weekNumber = $request->input('week_number');
+        $timetableData = $request->input('timetable_data');
+        $weekStartDate = $request->input('week_start_date');
 
         // Validate required parameters
         if (!$courseType || !$location || !$courseId || !$intakeId || !$startDate || !$endDate) {
             return response()->json(['error' => 'Missing required parameters'], 400);
+        }
+
+        // Parse timetable data if provided
+        $parsedTimetableData = null;
+        if ($timetableData) {
+            try {
+                $parsedTimetableData = json_decode($timetableData, true);
+            } catch (\Exception $e) {
+                \Log::warning('Failed to parse timetable data:', ['error' => $e->getMessage()]);
+            }
         }
 
         try {
@@ -178,8 +234,15 @@ class TimetableController extends Controller
                 'startDate' => $startDate,
                 'endDate' => $endDate,
                 'semester' => $semester,
+                'weekNumber' => $weekNumber,
+                'timetableData' => $parsedTimetableData,
                 'generatedAt' => now()->format('Y-m-d H:i:s')
             ];
+
+            // Add week start date for PDF header dates
+            if ($weekStartDate) {
+                $data['weekStartDate'] = $weekStartDate;
+            }
 
             // For degree programs, get semester details
             if ($courseType === 'degree' && $semester) {
@@ -207,7 +270,7 @@ class TimetableController extends Controller
             $pdf->setPaper('A4', 'landscape');
             
             // Generate filename
-            $filename = strtolower($courseType) . '_timetable_' . date('Y-m-d_H-i-s') . '.pdf';
+            $filename = strtolower($courseType) . '_timetable_week_' . $weekNumber . '_' . date('Y-m-d_H-i-s') . '.pdf';
             
             // Return PDF as download
             return $pdf->download($filename);

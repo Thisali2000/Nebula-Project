@@ -7,7 +7,7 @@
     $currentUserRole = auth()->user()->user_role ?? '';
 @endphp
 
-@if($currentUserRole == 'Program Administrator (level 01)')
+@if($currentUserRole == 'Program Administrator (level 01)' || $currentUserRole == 'Developer')
 <div class="container mt-5">
   <div class="p-4 rounded shadow w-100 bg-white mt-4">
     <h3 class="text-center mb-4">Create a User</h3>
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
 @else
 <div class="alert alert-warning mt-5 mx-5">
     <h4 class="alert-heading">Access Restricted</h4>
-    <p>Only Program Administrator (level 01) can create new users. You do not have permission to access this feature.</p>
+    <p>Only Program Administrator (level 01) and Developer can create new users. You do not have permission to access this feature.</p>
 </div>
 @endif
 @endsection 

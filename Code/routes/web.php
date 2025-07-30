@@ -384,6 +384,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/get-intakes/{courseId}/{location}', [App\Http\Controllers\TimetableController::class, 'getIntakesForCourseAndLocation']);
     Route::get('/get-courses-by-location', [TimetableController::class, 'getCoursesByLocation'])->name('timetable.courses.by.location');
     Route::get('/get-semesters', [TimetableController::class, 'getSemesters'])->name('timetable.semesters');
+    Route::get('/get-weeks', [TimetableController::class, 'getWeeks'])->name('timetable.weeks');
     Route::get('/get-modules-by-semester', [TimetableController::class, 'getModulesBySemester'])->name('timetable.modules.by.semester');
     Route::get('/download-timetable-pdf', [TimetableController::class, 'downloadTimetablePDF'])->name('timetable.download.pdf');
 });

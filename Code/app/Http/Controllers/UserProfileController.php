@@ -185,9 +185,9 @@ public function updateUserStatus(Request $request)
         // Get the authenticated user
         $currentUser = Auth::user();
         
-        // Check if user is Program Administrator (level 01)
-        if ($currentUser->user_role !== 'Program Administrator (level 01)') {
-            abort(403, 'Access denied. Only Program Administrator (level 01) can access this page.');
+        // Check if user is Program Administrator (level 01) or Developer
+        if (!in_array($currentUser->user_role, ['Program Administrator (level 01)', 'Developer'])) {
+            abort(403, 'Access denied. Only Program Administrator (level 01) and Developer can access this page.');
         }
 
         // Fetch all users for management
@@ -229,8 +229,8 @@ public function updateUserStatus(Request $request)
     public function showCreateUserForm()
     {
         $currentUser = Auth::user();
-        if (!in_array($currentUser->user_role, ['DGM', 'Program Administrator (level 01)'])) {
-            abort(403, 'Access denied. Only DGM and Program Administrator (level 01) can access this page.');
+        if (!in_array($currentUser->user_role, ['DGM', 'Program Administrator (level 01)', 'Developer'])) {
+            abort(403, 'Access denied. Only DGM, Program Administrator (level 01), and Developer can access this page.');
         }
         $userRoles = array_keys(\App\Helpers\RoleHelper::getRoles());
         $locations = [

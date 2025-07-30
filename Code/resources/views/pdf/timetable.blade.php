@@ -191,97 +191,153 @@
     </div>
 
     <div class="timetable-section">
-        <div class="timetable-title">Weekly Timetable</div>
+        <div class="timetable-title">
+            @if(isset($weekNumber))
+                Week {{ $weekNumber }} Timetable
+            @else
+                Weekly Timetable
+            @endif
+        </div>
         
         <table class="timetable-grid">
             <thead>
                 <tr>
                     <th style="width: 15%;">Time</th>
-                    <th style="width: 12%;">Monday</th>
-                    <th style="width: 12%;">Tuesday</th>
-                    <th style="width: 12%;">Wednesday</th>
-                    <th style="width: 12%;">Thursday</th>
-                    <th style="width: 12%;">Friday</th>
-                    <th style="width: 12%;">Saturday</th>
-                    <th style="width: 12%;">Sunday</th>
+                    <th style="width: 12%;">
+                        Monday<br>
+                        @if(isset($weekStartDate))
+                            <small style="font-size: 10px; color: #666;">{{ \Carbon\Carbon::parse($weekStartDate)->format('d M') }}</small>
+                        @endif
+                    </th>
+                    <th style="width: 12%;">
+                        Tuesday<br>
+                        @if(isset($weekStartDate))
+                            <small style="font-size: 10px; color: #666;">{{ \Carbon\Carbon::parse($weekStartDate)->addDay()->format('d M') }}</small>
+                        @endif
+                    </th>
+                    <th style="width: 12%;">
+                        Wednesday<br>
+                        @if(isset($weekStartDate))
+                            <small style="font-size: 10px; color: #666;">{{ \Carbon\Carbon::parse($weekStartDate)->addDays(2)->format('d M') }}</small>
+                        @endif
+                    </th>
+                    <th style="width: 12%;">
+                        Thursday<br>
+                        @if(isset($weekStartDate))
+                            <small style="font-size: 10px; color: #666;">{{ \Carbon\Carbon::parse($weekStartDate)->addDays(3)->format('d M') }}</small>
+                        @endif
+                    </th>
+                    <th style="width: 12%;">
+                        Friday<br>
+                        @if(isset($weekStartDate))
+                            <small style="font-size: 10px; color: #666;">{{ \Carbon\Carbon::parse($weekStartDate)->addDays(4)->format('d M') }}</small>
+                        @endif
+                    </th>
+                    <th style="width: 12%;">
+                        Saturday<br>
+                        @if(isset($weekStartDate))
+                            <small style="font-size: 10px; color: #666;">{{ \Carbon\Carbon::parse($weekStartDate)->addDays(5)->format('d M') }}</small>
+                        @endif
+                    </th>
+                    <th style="width: 12%;">
+                        Sunday<br>
+                        @if(isset($weekStartDate))
+                            <small style="font-size: 10px; color: #666;">{{ \Carbon\Carbon::parse($weekStartDate)->addDays(6)->format('d M') }}</small>
+                        @endif
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Sample time slots - these would be populated with actual data -->
-                <tr>
-                    <td class="time-slot">08:00 - 09:00</td>
-                    <td class="module-cell">Module A</td>
-                    <td class="module-cell">Module B</td>
-                    <td class="module-cell">Module C</td>
-                    <td class="module-cell">Module D</td>
-                    <td class="module-cell">Module E</td>
-                    <td class="module-cell">Module F</td>
-                    <td class="module-cell">Module G</td>
-                </tr>
-                <tr>
-                    <td class="time-slot">09:00 - 10:00</td>
-                    <td class="module-cell">Module B</td>
-                    <td class="module-cell">Module C</td>
-                    <td class="module-cell">Module D</td>
-                    <td class="module-cell">Module E</td>
-                    <td class="module-cell">Module F</td>
-                    <td class="module-cell">Module G</td>
-                    <td class="module-cell">Module A</td>
-                </tr>
-                <tr>
-                    <td class="time-slot">10:00 - 11:00</td>
-                    <td class="module-cell">Module C</td>
-                    <td class="module-cell">Module D</td>
-                    <td class="module-cell">Module E</td>
-                    <td class="module-cell">Module F</td>
-                    <td class="module-cell">Module G</td>
-                    <td class="module-cell">Module A</td>
-                    <td class="module-cell">Module B</td>
-                </tr>
-                <tr>
-                    <td class="time-slot">11:00 - 12:00</td>
-                    <td class="module-cell">Module D</td>
-                    <td class="module-cell">Module E</td>
-                    <td class="module-cell">Module F</td>
-                    <td class="module-cell">Module G</td>
-                    <td class="module-cell">Module A</td>
-                    <td class="module-cell">Module B</td>
-                    <td class="module-cell">Module C</td>
-                </tr>
-                <tr>
-                    <td class="time-slot">12:00 - 13:00</td>
-                    <td colspan="7" style="text-align: center; background-color: #ffe6e6; font-weight: bold;">LUNCH BREAK</td>
-                </tr>
-                <tr>
-                    <td class="time-slot">13:00 - 14:00</td>
-                    <td class="module-cell">Module E</td>
-                    <td class="module-cell">Module F</td>
-                    <td class="module-cell">Module G</td>
-                    <td class="module-cell">Module A</td>
-                    <td class="module-cell">Module B</td>
-                    <td class="module-cell">Module C</td>
-                    <td class="module-cell">Module D</td>
-                </tr>
-                <tr>
-                    <td class="time-slot">14:00 - 15:00</td>
-                    <td class="module-cell">Module F</td>
-                    <td class="module-cell">Module G</td>
-                    <td class="module-cell">Module A</td>
-                    <td class="module-cell">Module B</td>
-                    <td class="module-cell">Module C</td>
-                    <td class="module-cell">Module D</td>
-                    <td class="module-cell">Module E</td>
-                </tr>
-                <tr>
-                    <td class="time-slot">15:00 - 16:00</td>
-                    <td class="module-cell">Module G</td>
-                    <td class="module-cell">Module A</td>
-                    <td class="module-cell">Module B</td>
-                    <td class="module-cell">Module C</td>
-                    <td class="module-cell">Module D</td>
-                    <td class="module-cell">Module E</td>
-                    <td class="module-cell">Module F</td>
-                </tr>
+                @if(isset($timetableData) && is_array($timetableData) && count($timetableData) > 0)
+                    @foreach($timetableData as $row)
+                        <tr>
+                            <td class="time-slot">{{ $row['time'] }}</td>
+                            <td class="module-cell">{{ $row['monday'] ? $row['monday'] : '-' }}</td>
+                            <td class="module-cell">{{ $row['tuesday'] ? $row['tuesday'] : '-' }}</td>
+                            <td class="module-cell">{{ $row['wednesday'] ? $row['wednesday'] : '-' }}</td>
+                            <td class="module-cell">{{ $row['thursday'] ? $row['thursday'] : '-' }}</td>
+                            <td class="module-cell">{{ $row['friday'] ? $row['friday'] : '-' }}</td>
+                            <td class="module-cell">{{ $row['saturday'] ? $row['saturday'] : '-' }}</td>
+                            <td class="module-cell">{{ $row['sunday'] ? $row['sunday'] : '-' }}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <!-- Sample time slots when no data is available -->
+                    <tr>
+                        <td class="time-slot">08:00 - 09:00</td>
+                        <td class="module-cell">Module A</td>
+                        <td class="module-cell">Module B</td>
+                        <td class="module-cell">Module C</td>
+                        <td class="module-cell">Module D</td>
+                        <td class="module-cell">Module E</td>
+                        <td class="module-cell">Module F</td>
+                        <td class="module-cell">Module G</td>
+                    </tr>
+                    <tr>
+                        <td class="time-slot">09:00 - 10:00</td>
+                        <td class="module-cell">Module B</td>
+                        <td class="module-cell">Module C</td>
+                        <td class="module-cell">Module D</td>
+                        <td class="module-cell">Module E</td>
+                        <td class="module-cell">Module F</td>
+                        <td class="module-cell">Module G</td>
+                        <td class="module-cell">Module A</td>
+                    </tr>
+                    <tr>
+                        <td class="time-slot">10:00 - 11:00</td>
+                        <td class="module-cell">Module C</td>
+                        <td class="module-cell">Module D</td>
+                        <td class="module-cell">Module E</td>
+                        <td class="module-cell">Module F</td>
+                        <td class="module-cell">Module G</td>
+                        <td class="module-cell">Module A</td>
+                        <td class="module-cell">Module B</td>
+                    </tr>
+                    <tr>
+                        <td class="time-slot">11:00 - 12:00</td>
+                        <td class="module-cell">Module D</td>
+                        <td class="module-cell">Module E</td>
+                        <td class="module-cell">Module F</td>
+                        <td class="module-cell">Module G</td>
+                        <td class="module-cell">Module A</td>
+                        <td class="module-cell">Module B</td>
+                        <td class="module-cell">Module C</td>
+                    </tr>
+                    <tr>
+                        <td class="time-slot">12:00 - 13:00</td>
+                        <td colspan="7" style="text-align: center; background-color: #ffe6e6; font-weight: bold;">LUNCH BREAK</td>
+                    </tr>
+                    <tr>
+                        <td class="time-slot">13:00 - 14:00</td>
+                        <td class="module-cell">Module E</td>
+                        <td class="module-cell">Module F</td>
+                        <td class="module-cell">Module G</td>
+                        <td class="module-cell">Module A</td>
+                        <td class="module-cell">Module B</td>
+                        <td class="module-cell">Module C</td>
+                        <td class="module-cell">Module D</td>
+                    </tr>
+                    <tr>
+                        <td class="time-slot">14:00 - 15:00</td>
+                        <td class="module-cell">Module F</td>
+                        <td class="module-cell">Module G</td>
+                        <td class="module-cell">Module A</td>
+                        <td class="module-cell">Module B</td>
+                        <td class="module-cell">Module C</td>
+                        <td class="module-cell">Module D</td>
+                        <td class="module-cell">Module E</td>
+                    </tr>
+                    <tr>
+                        <td class="time-slot">15:00 - 16:00</td>
+                        <td class="module-cell">Module G</td>
+                        <td class="module-cell">Module A</td>
+                        <td class="module-cell">Module B</td>
+                        <td class="module-cell">Module C</td>
+                        <td class="module-cell">Module D</td>
+                        <td class="module-cell">Module E</td>
+                        <td class="module-cell">Module F</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>
